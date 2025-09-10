@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
+  static const String id = '/registration_screen';
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
@@ -16,9 +19,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: 200.0,
-              child: Image.asset('images/logo.png'),
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 200.0,
+                child: Image.asset('images/logo.png'),
+              ),
             ),
             SizedBox(
               height: 48.0,
@@ -72,7 +78,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: EdgeInsets.only(top: 16.0),
               child: Material(
                 color: Colors.blueAccent,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
@@ -86,6 +92,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: Text(
                     'Register',
                     style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Material(
+                color: Colors.blueAccent,
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                elevation: 5.0,
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context, '/');
+                  },
+                  minWidth: 200.0,
+                  height: 42.0,
+                  color: Colors.white,
+                  child: Text(
+                    'Go Back',
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ),
               ),

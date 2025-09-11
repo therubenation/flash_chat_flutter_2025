@@ -13,27 +13,43 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   // adding animation controller
-  late AnimationController controller;
+  late final AnimationController _controller;
+  late final Animation<double> _animation; // 0.0 to 1.0 (eased)
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    controller = AnimationController(
+    _controller = AnimationController(
       duration: Duration(seconds: 1),
-      upperBound: 80.0,
-      vsync:
-          this, // provide current WelcomeScreenState object as value for vsync.
-      // use this keyword to referencing object made from class inside the class
+      vsync: this,
     );
 
-    controller.forward(); // forward() starts the animation from 0.0 to 1.0.
+    // curves use values from 0 to 1
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
-    controller.addListener(() {
+    _controller.forward(); // forward() starts the animation from 0.0 to 1.0
+    //_controller.reverse(from: 1.0); // reverse() starts the animation from 1.0 to 0.0
+
+    _controller.addListener(() {
       setState(() {}); // without this animation would not work
-      print(controller.value);
+      print(_animation.value);
     });
+
+    // L171: adding status listener to check animation status
+    _animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controller.reverse(from: 1.0);
+      }
+    });
+  }
+
+  // after animation: always dispose controller
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,7 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: controller.value,
+                    height: _animation.value * 100,
                   ),
                 ),
                 Text(

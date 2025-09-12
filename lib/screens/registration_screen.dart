@@ -1,8 +1,10 @@
 import 'package:flash_chat_flutter_2025/components/roundedButton.dart';
+import 'package:flash_chat_flutter_2025/screens/chat_screen.dart';
 import 'package:flash_chat_flutter_2025/screens/welcome_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter_2025/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -12,6 +14,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _auth = FirebaseAuth.instance;
+  late String email;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +39,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 48.0,
             ),
             TextField(
+              keyboardType: TextInputType.emailAddress,
+              textAlign: TextAlign.center,
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                 labelText: 'Enter your email address',
@@ -44,8 +52,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 8.0,
             ),
             TextField(
+                obscureText: true,
+                textAlign: TextAlign.center,
                 onChanged: (value) {
-                  //Do something with the user input.
+                  password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
                     labelText: 'Enter your password')),
@@ -53,14 +63,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 24.0,
             ),
             RoundedButton(
-                title: 'Register',
-                color: Colors.lightBlue,
-                onPressed: () =>
-                    'user pressed registration button at registrationScreen'),
-            RoundedButton(
-              title: 'Go Back',
-              color: Colors.white30,
-              onPressed: () => Navigator.pushNamed(context, WelcomeScreen.id),
+              title: 'Register',
+              color: Colors.lightBlue,
+              onPressed: () async {
+                try {
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  if (newUser != null) {
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
             ),
           ],
         ),

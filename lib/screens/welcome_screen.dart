@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat_flutter_2025/screens/login_screen.dart';
 import 'package:flash_chat_flutter_2025/screens/registration_screen.dart';
+import 'package:flash_chat_flutter_2025/components/roundedButton.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -82,34 +83,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ],
             ),
             const SizedBox(height: 48.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text('Log In'),
-                ),
-              ),
+            RoundedButton(
+              title: 'Log In',
+              color: Colors.lightBlueAccent,
+              onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, RegistrationScreen.id),
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: const Text('Register'),
-                ),
-              ),
+            RoundedButton(
+              title: 'Register',
+              color: Colors.blueAccent,
+              onPressed: () =>
+                  Navigator.pushNamed(context, RegistrationScreen.id),
             ),
           ],
         ),
